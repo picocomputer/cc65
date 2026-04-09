@@ -130,6 +130,29 @@ long __fastcall__ ria_call_long (unsigned char op);
 #define RIA_OP_GETLABEL 0x2D
 #define RIA_OP_GETFREE 0x2E
 
+/* Math coprocessor opcodes */
+#define RIA_OP_MTH_MUL8   0x30
+#define RIA_OP_MTH_MUL16  0x31
+#define RIA_OP_MTH_MULS16 0x32
+#define RIA_OP_MTH_DIV16  0x33
+#define RIA_OP_MTH_SQRT32 0x34
+#define RIA_OP_MTH_FADD   0x38
+#define RIA_OP_MTH_FSUB   0x39
+#define RIA_OP_MTH_FMUL   0x3A
+#define RIA_OP_MTH_FDIV   0x3B
+#define RIA_OP_MTH_FSQRT  0x3C
+#define RIA_OP_MTH_FSIN   0x3D
+#define RIA_OP_MTH_FCOS   0x3E
+#define RIA_OP_MTH_FATAN2 0x3F
+#define RIA_OP_MTH_FPOW   0x40
+#define RIA_OP_MTH_FLOG   0x41
+#define RIA_OP_MTH_FEXP   0x42
+#define RIA_OP_MTH_FTOI   0x43
+#define RIA_OP_MTH_ITOF   0x44
+#define RIA_OP_MTH_DADD   0x48
+#define RIA_OP_MTH_DMUL   0x49
+#define RIA_OP_MTH_DDIV   0x4A
+
 /* RIA attribute IDs */
 
 #define RIA_ATTR_ERRNO_OPT 0x00
@@ -184,6 +207,39 @@ int __fastcall__ f_getcwd (char* name, int size);
 int __fastcall__ f_setlabel (const char* name);
 int __fastcall__ f_getlabel (const char* path, char* label);
 int __fastcall__ f_getfree (const char* name, unsigned long* free, unsigned long* total);
+
+/* Math coprocessor API */
+
+/* IEEE 754 single-precision float represented as raw 32-bit pattern */
+typedef unsigned long fp32_t;
+
+/* Integer math */
+unsigned int  __fastcall__ mth_mul8   (unsigned char a,  unsigned char b);
+unsigned long __fastcall__ mth_mul16  (unsigned int a,   unsigned int b);
+long          __fastcall__ mth_muls16 (int a,            int b);
+unsigned long __fastcall__ mth_div16  (unsigned long dividend, unsigned int divisor);
+unsigned int  __fastcall__ mth_sqrt32 (unsigned long n);
+
+/* Float32 conversions */
+fp32_t __fastcall__ mth_itof (long i);
+long   __fastcall__ mth_ftoi (fp32_t x);
+
+/* Float32 arithmetic */
+fp32_t __fastcall__ mth_addf  (fp32_t a, fp32_t b);
+fp32_t __fastcall__ mth_subf  (fp32_t a, fp32_t b);
+fp32_t __fastcall__ mth_mulf  (fp32_t a, fp32_t b);
+fp32_t __fastcall__ mth_divf  (fp32_t a, fp32_t b);
+
+/* Float32 unary */
+fp32_t __fastcall__ mth_sqrtf (fp32_t x);
+fp32_t __fastcall__ mth_sinf  (fp32_t x);
+fp32_t __fastcall__ mth_cosf  (fp32_t x);
+fp32_t __fastcall__ mth_logf  (fp32_t x);
+fp32_t __fastcall__ mth_expf  (fp32_t x);
+
+/* Float32 binary transcendental */
+fp32_t __fastcall__ mth_atan2f (fp32_t y, fp32_t x);
+fp32_t __fastcall__ mth_powf   (fp32_t base, fp32_t exp);
 
 /* XREG location helpers */
 
