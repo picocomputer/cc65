@@ -1,9 +1,7 @@
 ;
 ; 2026, Rumbledethumps
 ;
-; The bodies of the XRAM block copies. Each portal is a module of its own
-; because ld65 links whole modules, so a program that copies through one
-; portal is not charged for the other.
+; XRAM block copies, optimally unrolled.
 
 .include "rp6502.inc"
 
@@ -26,7 +24,7 @@
         ldy     #0              ; popax leaves Y at 1 on a 65C02
         ldx     ptr3+1
         beq     @tail
-@page:  .repeat 2
+@page:  .repeat 8
         lda     rw
         sta     (ptr2),y
         iny
@@ -35,13 +33,30 @@
         inc     ptr2+1
         dex
         bne     @page
-@tail:  ldx     ptr3
+@tail:  lda     ptr3
         beq     @done
+        and     #7
+        beq     @eights
+        tax
 @rest:  lda     rw
         sta     (ptr2),y
         iny
         dex
         bne     @rest
+@eights:
+        lda     ptr3
+        lsr     a
+        lsr     a
+        lsr     a
+        beq     @done
+        tax
+@eight: .repeat 8
+        lda     rw
+        sta     (ptr2),y
+        iny
+        .endrepeat
+        dex
+        bne     @eight
 @done:  rts
 .endmacro
 
@@ -61,7 +76,7 @@
         ldy     #0              ; popax leaves Y at 1 on a 65C02
         ldx     ptr3+1
         beq     @tail
-@page:  .repeat 2
+@page:  .repeat 8
         lda     (ptr2),y
         sta     rw
         iny
@@ -70,12 +85,29 @@
         inc     ptr2+1
         dex
         bne     @page
-@tail:  ldx     ptr3
+@tail:  lda     ptr3
         beq     @done
+        and     #7
+        beq     @eights
+        tax
 @rest:  lda     (ptr2),y
         sta     rw
         iny
         dex
         bne     @rest
+@eights:
+        lda     ptr3
+        lsr     a
+        lsr     a
+        lsr     a
+        beq     @done
+        tax
+@eight: .repeat 8
+        lda     (ptr2),y
+        sta     rw
+        iny
+        .endrepeat
+        dex
+        bne     @eight
 @done:  rts
 .endmacro
