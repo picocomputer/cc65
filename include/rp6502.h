@@ -200,6 +200,7 @@ int __fastcall__ time_set (unsigned long time);
 
 /* Extended memory */
 
+#define zxstack() ((void)(RIA.op = RIA_OP_ZXSTACK))
 int __cdecl__ xregn (char device, char channel, unsigned char address, unsigned count,
     ...);
 int __cdecl__ xreg (char device, char channel, unsigned char address, ...);

@@ -28,7 +28,7 @@ size_t __fastcall__ strftime (char* buf, size_t bufsize, const char* format,
         return 0;               /* errno set by OS */
     }
     if ((unsigned)ax >= bufsize) {
-        RIA.op = RIA_OP_ZXSTACK;
+        zxstack();
         return 0;               /* did not fit, per ISO C */
     }
     for (i = 0; i < (unsigned)ax; ++i) {
