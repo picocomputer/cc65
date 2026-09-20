@@ -166,9 +166,6 @@ typedef struct {
     char fname[255 + 1];
 } f_stat_t;
 
-int __cdecl__ xregn (char device, char channel, unsigned char address, unsigned count,
-    ...);
-int __cdecl__ xreg (char device, char channel, unsigned char address, ...);
 int __fastcall__ phi2 (void); // deprecated, use ria_attr_*
 int __fastcall__ code_page (int); // deprecated, use ria_attr_*
 long __fastcall__ lrand (void); // deprecated, use ria_attr_*
@@ -201,7 +198,15 @@ int __fastcall__ ria_rln_peek (char* peek, unsigned char* pos);
 int __fastcall__ ria_rln_poke (const char* poke);
 int __fastcall__ time_set (unsigned long time);
 
-/* XRAM structure helpers */
+/* Extended memory */
+
+int __cdecl__ xregn (char device, char channel, unsigned char address, unsigned count,
+    ...);
+int __cdecl__ xreg (char device, char channel, unsigned char address, ...);
+void __fastcall__ xram0_read (void* dest, unsigned src, unsigned count);
+void __fastcall__ xram1_read (void* dest, unsigned src, unsigned count);
+void __fastcall__ xram0_write (unsigned dest, const void* src, unsigned count);
+void __fastcall__ xram1_write (unsigned dest, const void* src, unsigned count);
 
 #define xram0_struct_set(addr, type, member, val)                         \
     do                                                                    \
