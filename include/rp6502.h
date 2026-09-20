@@ -207,6 +207,9 @@ void __fastcall__ xram0_read (void* dest, unsigned src, unsigned count);
 void __fastcall__ xram1_read (void* dest, unsigned src, unsigned count);
 void __fastcall__ xram0_write (unsigned dest, const void* src, unsigned count);
 void __fastcall__ xram1_write (unsigned dest, const void* src, unsigned count);
+void __fastcall__ xram0_set (unsigned dest, unsigned char val, unsigned count);
+void __fastcall__ xram1_set (unsigned dest, unsigned char val, unsigned count);
+void __fastcall__ xram_move (unsigned dest, unsigned src, unsigned count);
 
 #define xram0_struct_set(addr, type, member, val)                         \
     do                                                                    \
