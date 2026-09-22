@@ -31,7 +31,7 @@ RIA_SREG        := $FFF8
 
 ; RIA OS operation numbers
 RIA_OP_EXIT               := $FF
-RIA_OP_ZXSTACK            := $00
+RIA_OP_DROP_XSTACK        := $00
 RIA_OP_XREG               := $01
 RIA_OP_ARGV               := $08
 RIA_OP_EXEC               := $09

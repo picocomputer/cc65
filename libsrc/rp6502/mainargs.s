@@ -21,10 +21,10 @@
     ; Bail if argv size <= 0.
     sta     ptr2
     txa
-    bmi     zxstack    ; count < 0
+    bmi     bail       ; count < 0
     sta     ptr2+1
     ora     ptr2
-    beq     zxstack    ; count == 0
+    beq     bail       ; count == 0
 
     ; Request memory; __argv_mem may clobber.
     lda     ptr2
@@ -43,7 +43,7 @@
     sta     __argv
     stx     __argv+1
     ora     ptr1+1
-    beq     zxstack
+    beq     bail
 
     ; Pop ptr2 bytes from RIA_XSTACK into memory.
     ldy     #0
@@ -96,8 +96,8 @@ walkloop:
     stx     ptr1+1
     bra     walkloop
 
-zxstack:
-    lda     #RIA_OP_ZXSTACK
+bail:
+    lda     #RIA_OP_DROP_XSTACK
     sta     RIA_OP
 
 done:
