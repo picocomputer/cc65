@@ -7,7 +7,7 @@
 .import callmain
 
 .export __STARTUP__ : absolute = 1
-.import __RAM_START__, __RAM_SIZE__
+.import __RAM_START__, __RAM_SIZE__, __STACKSIZE__
 
 .import copydata, zerobss, initlib, donelib
 
@@ -23,9 +23,9 @@ init:
     cld
 
 ; Set cc65 argument stack pointer
-    lda #<(__RAM_START__ + __RAM_SIZE__)
+    lda #<(__RAM_START__ + __RAM_SIZE__ + __STACKSIZE__)
     sta c_sp
-    lda #>(__RAM_START__ + __RAM_SIZE__)
+    lda #>(__RAM_START__ + __RAM_SIZE__ + __STACKSIZE__)
     sta c_sp+1
 
 ; Initialize memory storage
