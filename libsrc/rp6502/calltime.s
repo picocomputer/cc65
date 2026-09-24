@@ -2,7 +2,7 @@
 ; RIA time_t result handling shared by time() and mktime().
 ;
 
-        .export         __ria_call_time, __ria_time_fail
+        .export         __ria_call_time
 
         .import         _ria_call_int, _ria_pop_long
         .import         ___seterrno
@@ -20,7 +20,7 @@
 
 __ria_call_time:
         jsr     _ria_call_int        ; N = sign of int result (see ria_call_int)
-        bmi     __ria_time_fail      ; negative = OS error, errno set by OS
+        bmi     @fail                ; negative = OS error, errno set by OS
         jsr     _ria_pop_long        ; A:X:sreg = low 32 bits
         sta     tmp1
         lda     RIA_XSTACK           ; high 32 bits must be zero for
@@ -34,8 +34,7 @@ __ria_call_time:
 @overflow:
         lda     #ERANGE
         jsr     ___seterrno
-__ria_time_fail:                     ; public entry: just the -1 sentinel
-        lda     #$FF                 ; (time_t)-1
+@fail:  lda     #$FF                 ; (time_t)-1
         tax
         sta     sreg
         sta     sreg+1

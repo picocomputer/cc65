@@ -5,7 +5,7 @@
 
 .include "rp6502.inc"
 
-.importzp ptr1, ptr2, ptr3, tmp1
+.importzp ptr1, ptr2, ptr3
 .import popa, popax
 
 ; void __fastcall__ xramN_read (void* dest, unsigned src, unsigned count);
@@ -21,9 +21,21 @@
         jsr     popax           ; dest walks 6502 RAM
         sta     ptr2
         stx     ptr2+1
-        ldy     #0              ; popax leaves Y at 1 on a 65C02
         ldx     ptr3+1
-        beq     @tail
+        inx                     ; pages, plus one for the partial page
+        lda     ptr3
+        and     #$F8
+        tay
+        beq     @next
+        clc                     ; bias dest so the partial page ends as Y wraps
+        adc     ptr2
+        sta     ptr2
+        bcs     :+
+        dec     ptr2+1
+:       tya
+        eor     #$FF
+        tay
+        iny
 @page:  .repeat 8
         lda     rw
         sta     (ptr2),y
@@ -31,32 +43,17 @@
         .endrepeat
         bne     @page
         inc     ptr2+1
-        dex
+@next:  dex
         bne     @page
-@tail:  lda     ptr3
-        beq     @done
+        lda     ptr3
         and     #7
-        beq     @eights
+        beq     @done
         tax
 @rest:  lda     rw
         sta     (ptr2),y
         iny
         dex
         bne     @rest
-@eights:
-        lda     ptr3
-        lsr     a
-        lsr     a
-        lsr     a
-        beq     @done
-        tax
-@eight: .repeat 8
-        lda     rw
-        sta     (ptr2),y
-        iny
-        .endrepeat
-        dex
-        bne     @eight
 @done:  rts
 .endmacro
 
@@ -73,9 +70,21 @@
         stx     addr+1
         lda     #1
         sta     step
-        ldy     #0              ; popax leaves Y at 1 on a 65C02
         ldx     ptr3+1
-        beq     @tail
+        inx                     ; pages, plus one for the partial page
+        lda     ptr3
+        and     #$F8
+        tay
+        beq     @next
+        clc                     ; bias src so the partial page ends as Y wraps
+        adc     ptr2
+        sta     ptr2
+        bcs     :+
+        dec     ptr2+1
+:       tya
+        eor     #$FF
+        tay
+        iny
 @page:  .repeat 8
         lda     (ptr2),y
         sta     rw
@@ -83,32 +92,17 @@
         .endrepeat
         bne     @page
         inc     ptr2+1
-        dex
+@next:  dex
         bne     @page
-@tail:  lda     ptr3
-        beq     @done
+        lda     ptr3
         and     #7
-        beq     @eights
+        beq     @done
         tax
 @rest:  lda     (ptr2),y
         sta     rw
         iny
         dex
         bne     @rest
-@eights:
-        lda     ptr3
-        lsr     a
-        lsr     a
-        lsr     a
-        beq     @done
-        tax
-@eight: .repeat 8
-        lda     (ptr2),y
-        sta     rw
-        iny
-        .endrepeat
-        dex
-        bne     @eight
 @done:  rts
 .endmacro
 
@@ -118,46 +112,35 @@
         sta     ptr3            ; count arrives in A/X
         stx     ptr3+1
         jsr     popa            ; value
-        sta     tmp1
+        pha
         jsr     popax           ; dest is the XRAM address
         sta     addr
         stx     addr+1
         lda     #1
         sta     step
-        lda     tmp1            ; the value stays in A across the stores
+        ply                     ; the value stays in Y across the stores
         ldx     ptr3+1
-        beq     @tail
-@page:  ldy     #16
-@pg:    .repeat 16
-        sta     rw
+        inx                     ; pages, plus one for the partial page
+        lda     ptr3
+        and     #15
+        beq     @blocks
+@rest:  sty     rw
+        dec     a
+        bne     @rest
+@blocks:
+        lda     ptr3
+        lsr     a
+        lsr     a
+        lsr     a
+        lsr     a
+        beq     @next
+@page:  .repeat 16
+        sty     rw
         .endrepeat
-        dey
-        bne     @pg
+        dec     a
+        bne     @page
+@next:  lda     #16
         dex
         bne     @page
-@tail:  ldy     ptr3
-        beq     @done
-        tya
-        and     #15
-        beq     @sixteens
-        tax
-        lda     tmp1
-@rest:  sta     rw
-        dex
-        bne     @rest
-@sixteens:
-        tya
-        lsr     a
-        lsr     a
-        lsr     a
-        lsr     a
-        beq     @done
-        tax
-        lda     tmp1
-@blk:   .repeat 16
-        sta     rw
-        .endrepeat
-        dex
-        bne     @blk
-@done:  rts
+        rts
 .endmacro

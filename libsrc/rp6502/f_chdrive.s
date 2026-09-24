@@ -1,16 +1,16 @@
 ;
-; int __fastcall__ remove (const char* name);
+; int __fastcall__ f_chdrive (const char* name);
 ;
 
-        .export         _remove
+        .export         _f_chdrive
 
         .import         __ria_push_path, _ria_call_int
 
         .include        "rp6502.inc"
 
-_remove:
+_f_chdrive:
         jsr     __ria_push_path
         bmi     @done
-        lda     #RIA_OP_UNLINK
+        lda     #RIA_OP_CHDRIVE
         jmp     _ria_call_int
 @done:  rts
