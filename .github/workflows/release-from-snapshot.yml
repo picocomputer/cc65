@@ -1,0 +1,99 @@
+name: Release on Tag from Snapshot
+
+on:
+  push:
+    tags:
+      - "V*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'cc65/cc65'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
+      TAG_SHA: ${{ github.sha }}
+      SNAPSHOT_WORKFLOW: snapshot-on-push-master.yml
+
+    steps:
+      - name: Find successful snapshot run for this exact commit on master
+        id: snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Looking for successful '${SNAPSHOT_WORKFLOW}' run on master for SHA ${TAG_SHA}"
+
+          run_id="$(gh run list \
+            --repo "$REPO" \
+            --workflow "$SNAPSHOT_WORKFLOW" \
+            --status completed \
+            --json databaseId,headSha,conclusion \
+            --jq '.[] | select(.headSha == "'"${TAG_SHA}"'" and .conclusion == "success") | .databaseId' \
+            | head -n1 || true)"
+
+          if [[ -z "${run_id:-}" ]]; then
+            echo "No successful snapshot run found for commit ${TAG_SHA}."
+            echo "Stop now; rerun this workflow after snapshot succeeds."
+            exit 1
+          fi
+
+          echo "Found snapshot run id=${run_id}"
+          echo "run_id=${run_id}" >> "$GITHUB_OUTPUT"
+
+      - name: Download artifacts from snapshot run
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          gh run download "${{ steps.snapshot.outputs.run_id }}" \
+            --repo "$REPO" \
+            --dir artifacts
+
+      - name: Rename snapshot artifacts to tag names
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+
+          found=0
+          for f in artifacts/**/cc65-snapshot-win32.zip; do
+            mv "$f" "$(dirname "$f")/cc65-${TAG}-win32.zip"
+            found=1
+          done
+          for f in artifacts/**/cc65-snapshot-win64.zip; do
+            mv "$f" "$(dirname "$f")/cc65-${TAG}-win64.zip"
+            found=1
+          done
+          for f in artifacts/**/cc65-snapshot-docs.zip; do
+            mv "$f" "$(dirname "$f")/cc65-${TAG}-docs.zip"
+            found=1
+          done
+
+          if [[ "$found" -eq 0 ]]; then
+            echo "Expected snapshot artifacts were not found in run ${{ steps.snapshot.outputs.run_id }}"
+            exit 1
+          fi
+
+      - name: Create or update GitHub release and upload assets
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ env.TAG_SHA }}
+          generate_release_notes: true
+          files: |
+            artifacts/**/cc65-${{ env.TAG }}-win32.zip
+            artifacts/**/cc65-${{ env.TAG }}-win64.zip
+            artifacts/**/cc65-${{ env.TAG }}-docs.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
