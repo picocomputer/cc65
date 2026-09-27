@@ -15,16 +15,23 @@
 _xram_move:
         sta     ptr3            ; count arrives in A/X
         stx     ptr3+1
-        jsr     popax           ; src
+        lda     (c_sp)          ; src
         sta     ptr1
-        stx     ptr1+1
         sta     RIA_ADDR0
-        stx     RIA_ADDR0+1
-        jsr     popax           ; dest
+        ldy     #1
+        lda     (c_sp),y
+        sta     ptr1+1
+        sta     RIA_ADDR0+1
+        ldy     #3              ; dest
+        lda     (c_sp),y
+        tax
+        sta     ptr2+1
+        sta     RIA_ADDR1+1
+        dey
+        lda     (c_sp),y
         sta     ptr2
-        stx     ptr2+1
         sta     RIA_ADDR1
-        stx     RIA_ADDR1+1
+        jsr     incsp4
         sec                     ; dest - src < count means backward
         sbc     ptr1
         tay

@@ -4,7 +4,6 @@
 
         .export         _f_readdir
 
-        .import         _ria_call_int
         .import         popptr1
 
         .importzp       ptr1
@@ -15,7 +14,8 @@ _f_readdir:
         sta     RIA_A
         jsr     popptr1         ; dirent, Y = 0
         lda     #RIA_OP_READDIR
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @done
 @page:  lda     RIA_XSTACK
         sta     (ptr1),y

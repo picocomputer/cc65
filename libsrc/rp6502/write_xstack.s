@@ -4,7 +4,6 @@
 
         .export         _write_xstack, __ria_write_xstack
 
-        .import         _ria_call_int
         .import         popax, popptr1
 
         .importzp       ptr1
@@ -41,6 +40,7 @@ __ria_write_xstack = *
         dex
         bpl     @push
         lda     #RIA_OP_WRITE_XSTACK
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 inval:  lda     #EINVAL
         jmp     ___directerrno

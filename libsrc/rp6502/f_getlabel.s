@@ -4,7 +4,7 @@
 
         .export         _f_getlabel
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         popax
 
         .importzp       ptr2
@@ -18,7 +18,8 @@ _f_getlabel:
         jsr     __ria_push_path ; Y = 0
         bmi     @done
         lda     #RIA_OP_GETLABEL
-        jsr     _ria_call_int   ; length including the terminator
+        sta     RIA_OP
+        jsr     RIA_SPIN        ; length including the terminator
         bmi     @done
         pha
         dey

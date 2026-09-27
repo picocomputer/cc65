@@ -4,7 +4,7 @@
 
         .export         _f_getfree
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         popax
 
         .importzp       ptr2, ptr3
@@ -21,7 +21,8 @@ _f_getfree:
         jsr     __ria_push_path ; Y = 0
         bmi     @done
         lda     #RIA_OP_GETFREE
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @done
 @free:  lda     RIA_XSTACK
         sta     (ptr3),y

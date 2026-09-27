@@ -4,7 +4,7 @@
 
         .export         _f_chmod
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         popa, popax
 
         .importzp       tmp1
@@ -21,5 +21,6 @@ _f_chmod:
         lda     tmp1
         sta     RIA_XSTACK
         lda     #RIA_OP_CHMOD
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 @done:  rts

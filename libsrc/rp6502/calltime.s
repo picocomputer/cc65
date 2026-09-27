@@ -4,7 +4,6 @@
 
         .export         __ria_call_time
 
-        .import         _ria_call_int, _ria_pop_long
         .import         ___seterrno
 
         .importzp       sreg, tmp1
@@ -19,9 +18,15 @@
 ;           errno = ERANGE on overflow; OS sets errno on its own errors.
 
 __ria_call_time:
-        jsr     _ria_call_int        ; N = sign of int result (see ria_call_int)
+        sta     RIA_OP
+        jsr     RIA_SPIN             ; N = sign of int result
         bmi     @fail                ; negative = OS error, errno set by OS
-        jsr     _ria_pop_long        ; A:X:sreg = low 32 bits
+        lda     RIA_XSTACK           ; A:X:sreg = low 32 bits
+        ldx     RIA_XSTACK
+        ldy     RIA_XSTACK
+        sty     sreg
+        ldy     RIA_XSTACK
+        sty     sreg+1
         sta     tmp1
         lda     RIA_XSTACK           ; high 32 bits must be zero for
         ora     RIA_XSTACK           ; a 32-bit time_t

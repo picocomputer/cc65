@@ -5,7 +5,6 @@
         .export         _mktime
 
         .import         __ria_call_time
-        .import         _ria_call_int, _ria_push_long
 
         .importzp       ptr1, sreg, tmp1
 
@@ -24,9 +23,15 @@ _mktime:
         bcs     @ret            ; error/overflow -> return -1, errno set
         phx                     ; X survives on the stack across the call
         stz     RIA_XSTACK      ; zero on top keeps the unsigned time_t positive
-        jsr     _ria_push_long  ; normalized write-back via LOCALTIME
+        ldy     sreg+1          ; normalized write-back via LOCALTIME
+        sty     RIA_XSTACK
+        ldy     sreg
+        sty     RIA_XSTACK
+        stx     RIA_XSTACK
+        sta     RIA_XSTACK
         lda     #RIA_OP_LOCALTIME
-        jsr     _ria_call_int   ; N = sign of int result
+        sta     RIA_OP
+        jsr     RIA_SPIN        ; N = sign of int result
         bmi     @load
         ldy     #0
 @pop:   lda     RIA_XSTACK
