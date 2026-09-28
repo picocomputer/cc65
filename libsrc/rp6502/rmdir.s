@@ -6,7 +6,7 @@
 
         .export         _rmdir
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
 
         .importzp       ptr1
 
@@ -17,7 +17,8 @@ _rmdir:
         jsr     __ria_push_path
         bmi     @done
         lda     #RIA_OP_STAT
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @done
         ldy     #13             ; fattrib follows fsize and the dates and times
 @attr:  lda     RIA_XSTACK
@@ -30,7 +31,8 @@ _rmdir:
         ldx     ptr1+1
         jsr     __ria_push_path
         lda     #RIA_OP_UNLINK
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 @notdir:
         lda     #EINVAL
         jmp     ___directerrno

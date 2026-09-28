@@ -4,7 +4,6 @@
 
         .export         _f_getcwd, __ria_getcwd
 
-        .import         _ria_call_int
         .import         popptr1
 
         .importzp       ptr1, ptr2, tmp1
@@ -21,7 +20,8 @@ __ria_getcwd:
         stx     ptr2+1          ; size
         jsr     popptr1         ; name, Y = 0
         lda     #RIA_OP_GETCWD
-        jsr     _ria_call_int   ; length including the terminator
+        sta     RIA_OP
+        jsr     RIA_SPIN        ; length including the terminator
         bmi     @done
         pha
         clc

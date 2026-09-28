@@ -5,7 +5,7 @@
 
         .export         _f_utime
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         incsp8
 
         .importzp       c_sp
@@ -28,5 +28,6 @@ _f_utime:
         dey
         bpl     @date
         lda     #RIA_OP_UTIME
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
 @done:  jmp     incsp8

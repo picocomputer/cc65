@@ -4,7 +4,6 @@
 
         .export         _ria_rln_peek
 
-        .import         _ria_call_int
         .import         popptr1
 
         .importzp       ptr1, ptr2, tmp1
@@ -16,7 +15,8 @@ _ria_rln_peek:
         stx     ptr2+1          ; pos
         jsr     popptr1         ; peek, Y = 0
         lda     #RIA_OP_RLN_PEEK
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @done
         sta     tmp1
         lda     RIA_XSTACK

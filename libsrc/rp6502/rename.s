@@ -4,7 +4,7 @@
 
         .export         _rename
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         popax
 
         .importzp       ptr2
@@ -23,6 +23,7 @@ _rename:
         jsr     __ria_push_path
         bmi     @drop
         lda     #RIA_OP_RENAME
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 @drop:  stz     RIA_OP          ; RIA_OP_DROP_XSTACK removes oldname
 @done:  rts

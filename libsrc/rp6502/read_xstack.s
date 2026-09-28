@@ -4,7 +4,6 @@
 
         .export         _read_xstack, __ria_read_xstack
 
-        .import         _ria_call_int
         .import         popax, popptr1
 
         .importzp       ptr1, tmp1
@@ -20,7 +19,8 @@ _read_xstack:
 ; read() enters here with fildes in RIA_A, the count pushed, buf in ptr1, Y = 0.
 __ria_read_xstack = *
         lda     #RIA_OP_READ_XSTACK
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @done
         sta     tmp1
         pha

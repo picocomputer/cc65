@@ -5,22 +5,28 @@
 
 .include "rp6502.inc"
 
-.importzp ptr1, ptr2, ptr3
-.import popa, popax
+.importzp c_sp, ptr1, ptr2, ptr3
+.import incsp1, incsp2, incsp3, incsp4
 
 ; void __fastcall__ xramN_read (void* dest, unsigned src, unsigned count);
 
 .macro xram_read rw, addr, step
         sta     ptr3            ; count arrives in A/X
         stx     ptr3+1
-        jsr     popax           ; src is the XRAM address
+        lda     (c_sp)          ; src is the XRAM address
         sta     addr
-        stx     addr+1
+        ldy     #1
+        lda     (c_sp),y
+        sta     addr+1
         lda     #1
         sta     step
-        jsr     popax           ; dest walks 6502 RAM
+        iny
+        lda     (c_sp),y        ; dest is the 6502 RAM address
         sta     ptr2
-        stx     ptr2+1
+        iny
+        lda     (c_sp),y
+        sta     ptr2+1
+        jsr     incsp4
         ldx     ptr3+1
         inx                     ; pages, plus one for the partial page
         lda     ptr3
@@ -62,12 +68,18 @@
 .macro xram_write rw, addr, step
         sta     ptr3            ; count arrives in A/X
         stx     ptr3+1
-        jsr     popax           ; src walks 6502 RAM
+        lda     (c_sp)          ; src is the 6502 RAM address
         sta     ptr2
-        stx     ptr2+1
-        jsr     popax           ; dest is the XRAM address
+        ldy     #1
+        lda     (c_sp),y
+        sta     ptr2+1
+        iny
+        lda     (c_sp),y        ; dest is the XRAM address
         sta     addr
-        stx     addr+1
+        iny
+        lda     (c_sp),y
+        sta     addr+1
+        jsr     incsp4
         lda     #1
         sta     step
         ldx     ptr3+1
@@ -111,14 +123,17 @@
 .macro xram_set rw, addr, step
         sta     ptr3            ; count arrives in A/X
         stx     ptr3+1
-        jsr     popa            ; value
-        pha
-        jsr     popax           ; dest is the XRAM address
+        ldy     #1              ; dest is the XRAM address
+        lda     (c_sp),y
         sta     addr
-        stx     addr+1
+        iny
+        lda     (c_sp),y
+        sta     addr+1
         lda     #1
         sta     step
-        ply                     ; the value stays in Y across the stores
+        lda     (c_sp)          ; value
+        jsr     incsp3
+        tay                     ; the value stays in Y across the stores
         ldx     ptr3+1
         inx                     ; pages, plus one for the partial page
         lda     ptr3
@@ -143,4 +158,51 @@
         dex
         bne     @page
         rts
+.endmacro
+
+; unsigned char __fastcall__ xramN_peek8 (unsigned addr);
+
+.macro xram_peek8 rw, addr
+        sta     addr
+        stx     addr+1
+        lda     rw
+        ldx     #0
+        rts
+.endmacro
+
+; unsigned __fastcall__ xramN_peek16 (unsigned addr);
+
+.macro xram_peek16 rw, addr, step
+        sta     addr
+        stx     addr+1
+        lda     #1
+        sta     step
+        lda     rw
+        ldx     rw
+        rts
+.endmacro
+
+; void __fastcall__ _xramN_poke8 (unsigned char val, unsigned addr);
+
+.macro xram_poke8 rw, addr
+        sta     addr
+        stx     addr+1
+        lda     (c_sp)
+        sta     rw
+        jmp     incsp1
+.endmacro
+
+; void __fastcall__ _xramN_poke16 (unsigned val, unsigned addr);
+
+.macro xram_poke16 rw, addr, step
+        sta     addr
+        stx     addr+1
+        lda     #1
+        sta     step
+        lda     (c_sp)
+        sta     rw
+        ldy     #1
+        lda     (c_sp),y
+        sta     rw
+        jmp     incsp2
 .endmacro

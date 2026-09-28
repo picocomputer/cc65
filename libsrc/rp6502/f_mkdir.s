@@ -4,7 +4,7 @@
 
         .export         _f_mkdir
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
 
         .include        "rp6502.inc"
 
@@ -12,5 +12,6 @@ _f_mkdir:
         jsr     __ria_push_path
         bmi     @done
         lda     #RIA_OP_MKDIR
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 @done:  rts

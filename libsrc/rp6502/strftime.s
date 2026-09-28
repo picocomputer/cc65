@@ -5,7 +5,6 @@
 
         .export         _strftime
 
-        .import         _ria_call_int
         .import         incsp4, popptr1
         .import         ___seterrno
 
@@ -40,7 +39,8 @@ _strftime:
         sta     RIA_XSTACK
         bra     @fmt
 @call:  lda     #RIA_OP_STRFTIME
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @fail           ; errno set by OS
         sta     ptr2
         stx     ptr2+1

@@ -1,5 +1,5 @@
 ;
-; int __cdecl__ xregn (char device, char channel, unsigned char address,
+; int xregn (char device, char channel, unsigned char address,
 ;                      unsigned count, ...);
 ;
 ; The frame is the xreg() frame with count after address. Y holds the size
@@ -8,7 +8,6 @@
 
         .export         _xregn
 
-        .import         _ria_call_int
         .import         addysp
 
         .importzp       c_sp
@@ -30,4 +29,5 @@ _xregn:
         ply
         jsr     addysp
         lda     #RIA_OP_XREG
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN

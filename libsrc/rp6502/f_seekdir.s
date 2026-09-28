@@ -4,14 +4,21 @@
 
         .export         _f_seekdir
 
-        .import         _ria_call_int, _ria_push_long
         .import         popeax
+
+        .importzp       sreg
 
         .include        "rp6502.inc"
 
 _f_seekdir:
         sta     RIA_A
         jsr     popeax
-        jsr     _ria_push_long
+        ldy     sreg+1
+        sty     RIA_XSTACK
+        ldy     sreg
+        sty     RIA_XSTACK
+        stx     RIA_XSTACK
+        sta     RIA_XSTACK
         lda     #RIA_OP_SEEKDIR
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN

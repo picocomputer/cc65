@@ -4,7 +4,7 @@
 
         .export         _open
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         addysp, popax
 
         .include        "rp6502.inc"
@@ -21,5 +21,6 @@ _open:
         jsr     __ria_push_path
         bmi     @done
         lda     #RIA_OP_OPEN
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 @done:  rts

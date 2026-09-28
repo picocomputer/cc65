@@ -4,7 +4,7 @@
 
         .export         _f_stat
 
-        .import         __ria_push_path, _ria_call_int
+        .import         __ria_push_path
         .import         popax
 
         .importzp       ptr2
@@ -18,7 +18,8 @@ _f_stat:
         jsr     __ria_push_path ; Y = 0
         bmi     @done
         lda     #RIA_OP_STAT
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         bmi     @done
 @page:  lda     RIA_XSTACK
         sta     (ptr2),y

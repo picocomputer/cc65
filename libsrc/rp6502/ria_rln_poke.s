@@ -4,7 +4,7 @@
 
         .export         _ria_rln_poke
 
-        .import         _ria_call_int, _strlen
+        .import         _strlen
 
         .importzp       ptr1
 
@@ -33,6 +33,7 @@ _ria_rln_poke:
         dex
         bpl     @push
         lda     #RIA_OP_RLN_POKE
-        jmp     _ria_call_int
+        sta     RIA_OP
+        jmp     RIA_SPIN
 inval:  lda     #EINVAL
         jmp     ___directerrno

@@ -9,7 +9,6 @@
         .include        "rp6502.inc"
         .include        "errno.inc"
         .export         ___errno
-        .import         _ria_call_int
 ; This runs before the other library constructors, so OS calls made by
 ; them set cc65 errno values.
         .constructor    _errno_opt_constructor, 26
@@ -21,8 +20,9 @@ ___errno        := RIA_ERRNO
 
 ; Request the RIA use cc65 values for RIA_ERRNO
 _errno_opt_constructor:
-        stz RIA_A ; RIA_ATTR_ERRNO_OPT
+        stz RIA_A ; 0 = RIA_ATTR_ERRNO_OPT
         lda #$01 ; 1 = cc65
         sta RIA_XSTACK
         lda #RIA_OP_ATTR_SET
-        jmp _ria_call_int
+        sta RIA_OP
+        jmp RIA_SPIN

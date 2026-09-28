@@ -4,7 +4,6 @@
 
         .export         _write_xram
 
-        .import         _ria_call_int
         .import         incsp4
 
         .importzp       c_sp
@@ -19,5 +18,6 @@ _write_xram:
         dey
         bpl     @push
         lda     #RIA_OP_WRITE_XRAM
-        jsr     _ria_call_int
+        sta     RIA_OP
+        jsr     RIA_SPIN
         jmp     incsp4
