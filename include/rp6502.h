@@ -177,8 +177,8 @@ int __fastcall__ time_set (unsigned long time);
 
 /* Extended memory */
 
-int xreg (char device, char channel, unsigned char address, ...);
-int xregn (char device, char channel, unsigned char address, unsigned count,
+int xreg (char device, char channel, unsigned char index, ...);
+int xregn (char device, char channel, unsigned char index, unsigned count,
     ...);
 
 void __fastcall__ xram0_read (void* dest, unsigned src, unsigned count);

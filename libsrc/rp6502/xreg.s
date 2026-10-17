@@ -2,7 +2,7 @@
 ; 2023, Rumbledethumps
 ;
 ; CC65 will promote variadic char arguments to int. It will not demote longs.
-; int xreg(char device, char channel, unsigned char address, ...);
+; int xreg(char device, char channel, unsigned char index, ...);
 
 .export _xreg
 .importzp c_sp
