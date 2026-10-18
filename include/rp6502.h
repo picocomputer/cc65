@@ -154,7 +154,7 @@ int __fastcall__ read_xstack (void* buf, unsigned count, int fildes);
 int __fastcall__ read_xram (unsigned xaddr, unsigned count, int fildes);
 int __fastcall__ write_xstack (const void* buf, unsigned count, int fildes);
 int __fastcall__ write_xram (unsigned xaddr, unsigned count, int fildes);
-long __fastcall__ f_lseek (long offset, int whence, int fildes);
+long __fastcall__ f_lseek (long offset, char whence, int fildes);
 int __fastcall__ f_stat (const char* path, f_stat_t* dirent);
 int __fastcall__ f_opendir (const char* name);
 int __fastcall__ f_readdir (f_stat_t* dirent, int dirdes);
