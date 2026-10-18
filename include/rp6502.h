@@ -165,7 +165,7 @@ int __fastcall__ f_chmod (const char* path, unsigned char attr, unsigned char ma
 int __fastcall__ f_utime (const char* path, unsigned fdate, unsigned ftime, unsigned crdate, unsigned crtime);
 int __fastcall__ f_mkdir (const char* name);
 int __fastcall__ f_setlabel (const char* name);
-int __fastcall__ f_getlabel (const char* path, char* label);
+int __fastcall__ f_getlabel (const char* drive, char* label);
 int __fastcall__ f_getfree (const char* name, unsigned long* free, unsigned long* total);
 int __fastcall__ ria_rln_lastkey (char* key, unsigned char* action);
 int __fastcall__ ria_rln_peek (char* peek, unsigned char* pos);

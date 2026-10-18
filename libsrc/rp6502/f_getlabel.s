@@ -1,5 +1,5 @@
 ;
-; int __fastcall__ f_getlabel (const char* path, char* label);
+; int __fastcall__ f_getlabel (const char* drive, char* label);
 ;
 
         .export         _f_getlabel
