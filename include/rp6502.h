@@ -93,7 +93,6 @@ struct __RP6502
 #define RIA_OP_UTIME 0x27
 #define RIA_OP_MKDIR 0x28
 #define RIA_OP_CHDIR 0x29
-#define RIA_OP_CHDRIVE 0x2A
 #define RIA_OP_GETCWD 0x2B
 #define RIA_OP_SETLABEL 0x2C
 #define RIA_OP_GETLABEL 0x2D
@@ -165,7 +164,6 @@ int __fastcall__ f_rewinddir (int dirdes);
 int __fastcall__ f_chmod (const char* path, unsigned char attr, unsigned char mask);
 int __fastcall__ f_utime (const char* path, unsigned fdate, unsigned ftime, unsigned crdate, unsigned crtime);
 int __fastcall__ f_mkdir (const char* name);
-int __fastcall__ f_chdrive (const char* name);
 int __fastcall__ f_getcwd (char* name, int size);
 int __fastcall__ f_setlabel (const char* name);
 int __fastcall__ f_getlabel (const char* path, char* label);
