@@ -1,5 +1,5 @@
 ;
-; int __fastcall__ f_seekdir (long offs, int dirdes);
+; int __fastcall__ f_seekdir (long loc, int dirdes);
 ;
 
         .export         _f_seekdir

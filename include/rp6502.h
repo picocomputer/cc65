@@ -160,7 +160,7 @@ int __fastcall__ f_opendir (const char* name);
 int __fastcall__ f_readdir (f_stat_t* dirent, int dirdes);
 int __fastcall__ f_closedir (int dirdes);
 long __fastcall__ f_telldir (int dirdes);
-int __fastcall__ f_seekdir (long offs, int dirdes);
+int __fastcall__ f_seekdir (long loc, int dirdes);
 int __fastcall__ f_rewinddir (int dirdes);
 int __fastcall__ f_chmod (const char* path, unsigned char attr, unsigned char mask);
 int __fastcall__ f_utime (const char* path, unsigned fdate, unsigned ftime, unsigned crdate, unsigned crtime);
