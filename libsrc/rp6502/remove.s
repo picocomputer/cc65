@@ -11,7 +11,7 @@
 _remove:
         jsr     __ria_push_path
         bmi     @done
-        lda     #RIA_OP_UNLINK
+        lda     #RIA_OP_REMOVE
         sta     RIA_OP
         jmp     RIA_SPIN
 @done:  rts

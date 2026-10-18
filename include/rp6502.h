@@ -78,7 +78,7 @@ struct __RP6502
 #define RIA_OP_WRITE_XRAM 0x19
 #define RIA_OP_LSEEK 0x1A
 #define RIA_OP_LSEEK_CC65 0x1A
-#define RIA_OP_UNLINK 0x1B
+#define RIA_OP_REMOVE 0x1B
 #define RIA_OP_RENAME 0x1C
 #define RIA_OP_LSEEK_LLVM 0x1D
 #define RIA_OP_SYNCFS 0x1E
