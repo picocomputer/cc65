@@ -23,7 +23,13 @@ _read:  ldy     #0
         sty     tmp2
         sta     ptr2
         stx     ptr2+1
-        jsr     popptr1
+        cpx     #$80            ; a count above $7FFF moves $7FFF bytes
+        bcc     :+
+        lda     #$7F
+        sta     ptr2+1
+        lda     #$FF
+        sta     ptr2
+:       jsr     popptr1
         lda     ptr1
         sta     sreg
         lda     ptr1+1
