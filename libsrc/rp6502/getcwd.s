@@ -20,13 +20,13 @@ _getcwd:
         beq     @inval
         lda     #RIA_OP_GETCWD
         sta     RIA_OP
-        jsr     RIA_SPIN        ; length including the terminator
+        jsr     RIA_SPIN        ; length
         bmi     @fail
-        clc
+        sec
         sbc     ptr2
         txa
         sbc     ptr2+1
-        bcs     @range          ; length > size
+        bcs     @range          ; length >= size
 ; A path has at most 255 bytes, so Y reaches the terminator.
 @copy:  lda     RIA_XSTACK
         sta     (ptr1),y
