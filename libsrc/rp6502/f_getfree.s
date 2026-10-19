@@ -1,5 +1,5 @@
 ;
-; int __fastcall__ f_getfree (const char* name, unsigned long* free, unsigned long* total);
+; int __fastcall__ f_getfree (const char* drive, unsigned long* free, unsigned long* total);
 ;
 
         .export         _f_getfree
