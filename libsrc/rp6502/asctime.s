@@ -19,6 +19,8 @@ BUF_SIZE = 26                   ; "Sun Sep 16 01:03:52 1973\n" and the terminato
 _asctime:
         sta     ptr1
         stx     ptr1+1
+        ora     ptr1+1
+        beq     @done           ; NULL
         ldx     #0
         ldy     #tm::tm_wday
         lda     (ptr1),y

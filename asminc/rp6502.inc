@@ -45,7 +45,7 @@ RIA_OP_WRITE_XSTACK       = $18
 RIA_OP_WRITE_XRAM         = $19
 RIA_OP_LSEEK              = $1A
 RIA_OP_LSEEK_CC65         = $1A
-RIA_OP_UNLINK             = $1B
+RIA_OP_REMOVE             = $1B
 RIA_OP_RENAME             = $1C
 RIA_OP_LSEEK_LLVM         = $1D
 RIA_OP_SYNCFS             = $1E
@@ -60,7 +60,6 @@ RIA_OP_CHMOD              = $26
 RIA_OP_UTIME              = $27
 RIA_OP_MKDIR              = $28
 RIA_OP_CHDIR              = $29
-RIA_OP_CHDRIVE            = $2A
 RIA_OP_GETCWD             = $2B
 RIA_OP_SETLABEL           = $2C
 RIA_OP_GETLABEL           = $2D
@@ -105,12 +104,12 @@ RIA_ATTR_CLK_RUN_S        = $13
   .endif
 .endmacro
 
-.macro xreg device, channel, address, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15
+.macro xreg device, channel, index, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15
     lda #(device)
     sta RIA_XSTACK
     lda #(channel)
     sta RIA_XSTACK
-    lda #(address)
+    lda #(index)
     sta RIA_XSTACK
     xreg_values v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15
     lda #RIA_OP_XREG

@@ -1,10 +1,10 @@
 ;
-; long __fastcall__ f_lseek (long offset, int whence, int fildes);
+; long __fastcall__ f_lseek (long offset, char whence, int fildes);
 ;
 
         .export         _f_lseek
 
-        .import         incsp6
+        .import         incsp5
 
         .importzp       c_sp, sreg
 
@@ -12,11 +12,10 @@
 
 _f_lseek:
         sta     RIA_A           ; fildes
-        ldy     #5
+        ldy     #4
 @push:  lda     (c_sp),y        ; offset, high byte first
         sta     RIA_XSTACK
         dey
-        cpy     #1
         bne     @push
         lda     (c_sp)          ; whence
         sta     RIA_XSTACK
@@ -27,4 +26,4 @@ _f_lseek:
         sty     sreg
         ldy     RIA_SREG+1
         sty     sreg+1
-        jmp     incsp6
+        jmp     incsp5

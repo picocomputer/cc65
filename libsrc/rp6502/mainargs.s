@@ -13,14 +13,16 @@
 
 .proc initmainargs
 
-    ; Ask the RIA for argv data; returns total byte count in AX.
+    ; Ask the RIA for the size of the argv data, in AX. Drop the data, so
+    ; that __argv_mem() can make API calls.
     lda     #RIA_OP_ARGV
     sta     RIA_OP
     jsr     RIA_SPIN
-
-    ; Request memory; __argv_mem may clobber.
     phx
     pha
+    stz     RIA_OP          ; RIA_OP_DROP_XSTACK
+
+    ; Request memory; __argv_mem may clobber.
     jsr     ___argv_mem
     sta     __argv
     stx     __argv+1
@@ -31,9 +33,21 @@
     ply
     plx
 
-    ; Bail if no memory.
+    ; No arguments if no memory.
     ora     ptr1+1
-    beq     bail
+    beq     none
+
+    ; Ask again for the data. Bail if its size changed.
+    phx
+    lda     #RIA_OP_ARGV
+    sta     RIA_OP
+    jsr     RIA_SPIN
+    pla
+    cpy     RIA_A
+    bne     bail
+    cmp     RIA_X
+    bne     bail
+    tax
 
     ; Pop X:Y bytes from RIA_XSTACK into memory.
     tya
@@ -77,10 +91,20 @@ walkloop:
     bra     walkloop
 
 bail:
-    lda     #RIA_OP_DROP_XSTACK
-    sta     RIA_OP
+    stz     RIA_OP          ; RIA_OP_DROP_XSTACK
+
+    ; With no arguments, argv is an empty list, as C requires.
+none:
+    lda     #<noargs
+    sta     __argv
+    lda     #>noargs
+    sta     __argv+1
 
 done:
     rts
 
 .endproc
+
+.rodata
+
+noargs: .addr   0

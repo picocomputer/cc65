@@ -1,8 +1,8 @@
 ;
-; int xregn (char device, char channel, unsigned char address,
+; int xregn (char device, char channel, unsigned char index,
 ;                      unsigned count, ...);
 ;
-; The frame is the xreg() frame with count after address. Y holds the size
+; The frame is the xreg() frame with count after index. Y holds the size
 ; of the frame, so count is skipped and never sent.
 ;
 
@@ -16,7 +16,7 @@
 
 _xregn:
         phy
-        ldx     #3              ; device, channel, address
+        ldx     #3              ; device, channel, index
 @copy:  dey
         lda     (c_sp),y
         sta     RIA_XSTACK

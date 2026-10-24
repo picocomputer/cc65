@@ -1,5 +1,5 @@
 ;
-; int __fastcall__ f_getlabel (const char* path, char* label);
+; int __fastcall__ f_getlabel (const char* drive, char* label);
 ;
 
         .export         _f_getlabel
@@ -19,7 +19,7 @@ _f_getlabel:
         bmi     @done
         lda     #RIA_OP_GETLABEL
         sta     RIA_OP
-        jsr     RIA_SPIN        ; length including the terminator
+        jsr     RIA_SPIN        ; length
         bmi     @done
         pha
         dey

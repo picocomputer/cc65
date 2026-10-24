@@ -78,7 +78,7 @@ struct __RP6502
 #define RIA_OP_WRITE_XRAM 0x19
 #define RIA_OP_LSEEK 0x1A
 #define RIA_OP_LSEEK_CC65 0x1A
-#define RIA_OP_UNLINK 0x1B
+#define RIA_OP_REMOVE 0x1B
 #define RIA_OP_RENAME 0x1C
 #define RIA_OP_LSEEK_LLVM 0x1D
 #define RIA_OP_SYNCFS 0x1E
@@ -93,7 +93,6 @@ struct __RP6502
 #define RIA_OP_UTIME 0x27
 #define RIA_OP_MKDIR 0x28
 #define RIA_OP_CHDIR 0x29
-#define RIA_OP_CHDRIVE 0x2A
 #define RIA_OP_GETCWD 0x2B
 #define RIA_OP_SETLABEL 0x2C
 #define RIA_OP_GETLABEL 0x2D
@@ -151,25 +150,23 @@ int ria_execl (const char* path, ...);
 long __fastcall__ ria_attr_get (unsigned char id);
 int __fastcall__ ria_attr_set (long val, unsigned char id);
 int __fastcall__ read_xstack (void* buf, unsigned count, int fildes);
-int __fastcall__ read_xram (unsigned buf, unsigned count, int fildes);
+int __fastcall__ read_xram (unsigned xaddr, unsigned count, int fildes);
 int __fastcall__ write_xstack (const void* buf, unsigned count, int fildes);
-int __fastcall__ write_xram (unsigned buf, unsigned count, int fildes);
-long __fastcall__ f_lseek (long offset, int whence, int fildes);
+int __fastcall__ write_xram (unsigned xaddr, unsigned count, int fildes);
+long __fastcall__ f_lseek (long offset, char whence, int fildes);
 int __fastcall__ f_stat (const char* path, f_stat_t* dirent);
 int __fastcall__ f_opendir (const char* name);
 int __fastcall__ f_readdir (f_stat_t* dirent, int dirdes);
 int __fastcall__ f_closedir (int dirdes);
 long __fastcall__ f_telldir (int dirdes);
-int __fastcall__ f_seekdir (long offs, int dirdes);
+int __fastcall__ f_seekdir (long loc, int dirdes);
 int __fastcall__ f_rewinddir (int dirdes);
 int __fastcall__ f_chmod (const char* path, unsigned char attr, unsigned char mask);
 int __fastcall__ f_utime (const char* path, unsigned fdate, unsigned ftime, unsigned crdate, unsigned crtime);
 int __fastcall__ f_mkdir (const char* name);
-int __fastcall__ f_chdrive (const char* name);
-int __fastcall__ f_getcwd (char* name, int size);
 int __fastcall__ f_setlabel (const char* name);
-int __fastcall__ f_getlabel (const char* path, char* label);
-int __fastcall__ f_getfree (const char* name, unsigned long* free, unsigned long* total);
+int __fastcall__ f_getlabel (const char* drive, char* label);
+int __fastcall__ f_getfree (const char* drive, unsigned long* free, unsigned long* total);
 int __fastcall__ ria_rln_lastkey (char* key, unsigned char* action);
 int __fastcall__ ria_rln_peek (char* peek, unsigned char* pos);
 int __fastcall__ ria_rln_poke (const char* poke);
@@ -177,8 +174,8 @@ int __fastcall__ time_set (unsigned long time);
 
 /* Extended memory */
 
-int xreg (char device, char channel, unsigned char address, ...);
-int xregn (char device, char channel, unsigned char address, unsigned count,
+int xreg (char device, char channel, unsigned char index, ...);
+int xregn (char device, char channel, unsigned char index, unsigned count,
     ...);
 
 void __fastcall__ xram0_read (void* dest, unsigned src, unsigned count);
