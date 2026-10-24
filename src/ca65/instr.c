@@ -441,7 +441,7 @@ static const struct {
         { "BCC",  0x0020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x0020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x0020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x0A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x080006C, 0x00, 2, PutAll },
         { "BMI",  0x0020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x0020000, 0xd0, 0, PutPCRel8 },
         { "BPL",  0x0020000, 0x10, 0, PutPCRel8 },
@@ -536,7 +536,7 @@ static const struct {
         { "BCC",  0x0020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x0020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x0020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x0A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x080006C, 0x00, 2, PutAll },
         { "BMI",  0x0020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x0020000, 0xd0, 0, PutPCRel8 },
         { "BPL",  0x0020000, 0x10, 0, PutPCRel8 },
@@ -647,7 +647,7 @@ static const struct {
         { "BCC",  0x0020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x0020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x0020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x0A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x080006C, 0x00, 2, PutAll },
         { "BMI",  0x0020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x0020000, 0xd0, 0, PutPCRel8 },
         { "BPL",  0x0020000, 0x10, 0, PutPCRel8 },
@@ -763,7 +763,7 @@ static const struct {
         { "BCC",  0x0020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x0020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x0020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x0A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x080006C, 0x00, 2, PutAll },
         { "BMI",  0x0020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x0020000, 0xd0, 0, PutPCRel8 },
         { "BPL",  0x0020000, 0x10, 0, PutPCRel8 },
@@ -908,7 +908,7 @@ static const struct {
         { "BCC",  0x0020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x0020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x0020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x0A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x080006C, 0x00, 2, PutAll },
         { "BMI",  0x0020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x0020000, 0xd0, 0, PutPCRel8 },
         { "BPL",  0x0020000, 0x10, 0, PutPCRel8 },
@@ -1059,7 +1059,7 @@ static const struct {
         { "BCC",  0x00020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x00020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x00020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x00A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x0080006C, 0x00, 2, PutAll },
         { "BITQ", 0x0000000c, 0x20, 15, Put45GS02_Q },
         { "BMI",  0x00020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x00020000, 0xd0, 0, PutPCRel8 },
@@ -1368,7 +1368,7 @@ static const struct {
         { "BCC",  0x0020000, 0x90, 0, PutPCRel8 },
         { "BCS",  0x0020000, 0xb0, 0, PutPCRel8 },
         { "BEQ",  0x0020000, 0xf0, 0, PutPCRel8 },
-        { "BIT",  0x0A0006C, 0x00, 2, PutAll },
+        { "BIT",  0x080006C, 0x00, 2, PutAll },
         { "BMI",  0x0020000, 0x30, 0, PutPCRel8 },
         { "BNE",  0x0020000, 0xd0, 0, PutPCRel8 },
         { "BPL",  0x0020000, 0x10, 0, PutPCRel8 },
@@ -1645,7 +1645,7 @@ static unsigned char EATab[16][AM65I_COUNT] = {
     {   /* Table 2 (bit) */
         0x00, 0x00, 0x24, 0x2C, 0x0F, 0x34, 0x3C, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x89, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x89, 0x00, 0x89,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     },
     {   /* Table 3 (dec, dea) */
@@ -1954,15 +1954,23 @@ static void EmitCode (EffAddr* A)
 static void PutLDM_m740 (const InsDesc* Ins)
 {
     EffAddr A;
+    ExprNode* Imm;
+
     /* Evaluate the addressing mode */
     if (EvalEA (Ins, &A) == 0) {
         /* An error occurred */
         return;
     }
+
+    /* Read all operands before emitting anything, so that '*' in an
+    ** operand refers to the start of the instruction.
+    */
+    Consume (TOK_HASH, "`#' expected");
+    Imm = Expression ();
+
     Emit0 (Ins->BaseCode);
     EmitByte (A.Expr);
-    Consume (TOK_HASH, "`#' expected");
-    EmitByte (Expression ());
+    EmitByte (Imm);
 }
 
 
@@ -2066,12 +2074,23 @@ static void PutBlockMove (const InsDesc* Ins)
 static void PutBlockTransfer (const InsDesc* Ins)
 /* Handle the block transfer instructions (HuC6280) */
 {
+    ExprNode* Src;
+    ExprNode* Dst;
+    ExprNode* Len;
+
+    /* Read all operands before emitting anything, so that '*' in an
+    ** operand refers to the start of the instruction.
+    */
+    Src = Expression ();
+    ConsumeComma ();
+    Dst = Expression ();
+    ConsumeComma ();
+    Len = Expression ();
+
     Emit0 (Ins->BaseCode);
-    EmitWord (Expression ());
-    ConsumeComma ();
-    EmitWord (Expression ());
-    ConsumeComma ();
-    EmitWord (Expression ());
+    EmitWord (Src);
+    EmitWord (Dst);
+    EmitWord (Len);
 }
 
 
@@ -2079,10 +2098,20 @@ static void PutBlockTransfer (const InsDesc* Ins)
 static void PutBitBranch (const InsDesc* Ins)
 /* Handle 65C02 branch on bit condition */
 {
-    Emit0 (Ins->BaseCode);
-    EmitByte (Expression ());
+    ExprNode* Zp;
+    ExprNode* Target;
+
+    /* Read both operands before emitting anything, so that '*' in the
+    ** branch target refers to the start of the instruction. The branch
+    ** offset is relative to the end of the 3 byte instruction.
+    */
+    Zp = Expression ();
     ConsumeComma ();
-    EmitSigned (GenBranchExpr (1), 1);
+    Target = GenBranchExpr (3);
+
+    Emit0 (Ins->BaseCode);
+    EmitByte (Zp);
+    EmitSigned (Target, 1);
 }
 
 static void PutBitBranch_m740 (const InsDesc* Ins)
@@ -2108,17 +2137,20 @@ static void PutBitBranch_m740 (const InsDesc* Ins)
     A.Opcode = Ins->BaseCode;
 
     if (A.AddrMode == AM65I_ACCU) {
-        /* Accu */
-        Emit0 (A.Opcode);
+        /* Accu: 2 byte instruction, offset relative to its end */
+        ExprNode* Target;
         ConsumeComma ();
-        EmitSigned (GenBranchExpr (2), 1);
+        Target = GenBranchExpr (2);
+        Emit0 (A.Opcode);
+        EmitSigned (Target, 1);
     } else if (A.AddrMode == AM65I_ZP_REL) {
         /* FIXME: hacky, the comma was already consumed here */
         A.Opcode += 0x04;
-        /* Zeropage */
+        /* Zeropage: 3 byte instruction, offset relative to its end */
+        ExprNode* Target = GenBranchExpr (3);
         Emit0 (A.Opcode);
         EmitByte (A.Expr);
-        EmitSigned (GenBranchExpr (1), 1);
+        EmitSigned (Target, 1);
     }
 }
 
