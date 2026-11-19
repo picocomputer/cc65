@@ -3,13 +3,18 @@
 ;
 
         .export         _isatty
-        .import         return0, return1
+        .import         return0
 
-; stdin, stdout, stderr, CON: and TTY: are descriptors 0 to 4, all the console.
+        .include        "rp6502.inc"
+
+; 1 for the console, CON: or TTY:, on any descriptor. A closed one is -1
+; with errno set, and is not a terminal either.
 _isatty:
+        sta     RIA_A
+        lda     #RIA_OP_ISATTY
+        sta     RIA_OP
+        jsr     RIA_SPIN
         cpx     #$00
         bne     @no
-        cmp     #$05
-        bcs     @no
-        jmp     return1
+        rts
 @no:    jmp     return0
